@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<odoo>
+    <!--    form view for Approval Block-->
+
+    <record id="coc_view_form" model="ir.ui.view">
+        <field name="name">coc.form</field>
+        <field name="model">coc</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <h2>
+                        <group>
+                            <field name="partner_id"/>
+                        </group>
+                    </h2>
+                </sheet>
+
+                <!--                            chatter-->
+
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+<!--    action to view coc-->
+
+    <record id="coc_action" model="ir.actions.act_window">
+        <field name="name">Clash of Code</field>
+        <field name="res_model">coc</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+<!--    menu-->
+
+
+    <menuitem
+            name="Clash of Codes"
+            id="coc_root">
+        <menuitem id="coc_menu" action = "coc_action"/>
+    </menuitem>
+
+</odoo>

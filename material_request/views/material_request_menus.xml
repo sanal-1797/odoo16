@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<odoo>
+    <menuitem id="material_request_root"
+              name="Material Request">
+        <menuitem id="material_request_menu"
+                  action="material_request_action"/>
+    </menuitem>
+</odoo>

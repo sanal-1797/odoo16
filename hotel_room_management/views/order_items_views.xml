@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="order_items_action" model="ir.actions.act_window">
+        <field name="name">Order Items</field>
+        <field name="res_model">order.items</field>
+        <field name="view_mode">tree,kanban</field>
+
+    </record>
+
+    <record id="order_items_view_form" model="ir.ui.view">
+        <field name="name">order.items.form</field>
+        <field name="model">order.items</field>
+        <field name="arch" type="xml">
+            <form class="flex-column">
+                <div class="d-flex">
+                    <div class="flex-grow-0 pe-5">
+                        <field name="item_image" widget="image" class="o_lunch_image"/>
+                    </div>
+                </div>
+                <h2>
+                    <field name="item_name" readonly="True"/>
+                </h2>
+                <h4>
+                    <field name="item_price" widget="monetary" readonly="True"/>
+                    <field name="currency_id" invisible="1"/>
+                </h4>
+                <group>
+                    <field name="order_quantity"/>
+                </group>
+                <footer>
+                    <button string="Add To List" name="add_to_list" type="object" class="oe_highlight" groups="hotel_room_management.group_hotel_receptionist"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="order_items_view_tree" model="ir.ui.view">
+        <field name="name">order.items.tree</field>
+        <field name="model">order.items</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="item_name"/>
+                <field name="item_category" widget="many2many_tags"/>
+                <field name="item_price" widget="monetary" />
+                <field name="currency_id" invisible="1"/>
+                <field name="item_image"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="order_items_view_kanban" model="ir.ui.view">
+        <field name="name">order.items.kanban</field>
+        <field name="model">order.items</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <field name="item_image" class="o_lunch_image o_kanban_image_fill_left"
+                                   options="{'placeholder': '/lunch/static/img/lunch.png', 'size': [94, 94]}"
+                                   widget="image"/>
+                            <div>
+                                <strong>
+                                    <field name="item_name"/>
+                                </strong>
+                                <div>
+                                    <field name="item_category"/>
+                                    <field name="item_price" widget="monetary" readonly="True"/>
+                                    <field name="currency_id" invisible="1"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+</odoo>

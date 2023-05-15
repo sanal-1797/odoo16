@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="hotel_room_action" model="ir.actions.act_window">
+        <field name="name">Rooms</field>
+        <field name="res_model">hotel.rooms</field>
+        <field name="view_mode">tree,form</field>
+
+    </record>
+
+
+    <record id="hotel_room_view_form" model="ir.ui.view">
+        <field name="name">room.form</field>
+        <field name="model">hotel.rooms</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="room_no"/>
+                            <field name="bed"/>
+                            <field name="available_beds" attrs="{'invisible':[('bed','!=','dormitory')]}"/>
+                            <field name="facilities_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="rent" widget="monetary"/>
+                            <field name="room_guest_id" invisible="1"/>
+                            <field name="acc_id" invisible="1"/>
+                        </group>
+
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="hotel_room_view_tree" model="ir.ui.view">
+        <field name="name">hotel.room.tree</field>
+        <field name="model">hotel.rooms</field>
+        <field name="arch" type="xml">
+
+            <tree expand="1">
+                <field name="room_no"/>
+                <field name="bed"/>
+                <field name="facilities_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="hotel_room_view_search" model="ir.ui.view">
+        <field name="name">hotel.room.search</field>
+        <field name="model">hotel.rooms</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter string="Available rooms" name="available_rooms_group"
+                        domain="[('state','=','available')]"/>
+                <filter string="Bed Type" name="bed_type_filter" context="{'group_by': 'bed'}"/>
+            </search>
+        </field>
+    </record>
+
+
+</odoo>

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<odoo>
+    <menuitem
+            name="Employee Transfer"
+            id="menu_open_employee_transfer"
+            parent = 'hr.menu_hr_root'
+            action="employee_transfer_action"/>
+</odoo>

@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<odoo>
+    <record id="limit_5000" model="approval.block">
+        <field name="name">Limit 5000</field>
+        <field name="limit">5000</field>
+    </record>
+    <record id="limit_1000" model="approval.block">
+        <field name="name">Limit 10000</field>
+        <field name="limit">10000</field>
+
+    </record>
+</odoo>

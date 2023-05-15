@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="basic_snippet" name="Top 10 Customers">
+        <section class="container dynamic_snippet_blog">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>Top 10 Customers</h1>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Customers</th>
+                                <th>No.Of Orders</th>
+                            </tr>
+                        </thead>
+                        <tbody id="customers">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </template>
+    <template id="external_snippets" inherit_id="website.snippets" priority="8">
+        <xpath expr="//div[@id='snippet_effect']//t[@t-snippet][last()]" position="after">
+            <t t-snippet="top_10_customers.basic_snippet"/>
+        </xpath>
+    </template>
+</odoo>

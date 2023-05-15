@@ -1,0 +1,146 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="hotel_accommodation_action" model="ir.actions.act_window">
+        <field name="name">Accommodation</field>
+        <field name="res_model">accommodation.guest</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_today_expected_checkout': 1}</field>
+    </record>
+
+    <record id="hotel_guest_view_form" model="ir.ui.view">
+        <field name="name">guest.form</field>
+        <field name="model">accommodation.guest</field>
+        <field name="arch" type="xml">
+
+            <form>
+                <header>
+                    <button name="action_confirm" string="Check in" class="btn-primary" type='object' states="draft" groups="hotel_room_management.group_hotel_receptionist"/>
+                    <button name="action_check_out" string="check out" class="btn-primary" type='object'
+                            states="check_in" groups="hotel_room_management.group_hotel_receptionist"/>
+                    <button name="action_reset_to_draft" string="Reset to draft" type='object'
+                            states="check_in" groups="hotel_room_management.group_hotel_receptionist"/>
+                    <button name="action_cancel" string="Cancel" type='object'
+                            states="check_in" groups="hotel_room_management.group_hotel_receptionist"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                    <button name="action_view_invoice" type="object" class="oe_stat_button" icon="fa-pencil-square-o" string="Invoice" states="check_out">
+                        <field name="account_id" widget="statinfo" string="Invoices"/>
+                    </button>
+                    </div>
+                    <widget name="web_ribbon" title="paid" bg_color="bg-danger"
+                            attrs="{'invisible': [('payment_state', '!=', 'paid')]}"/>
+
+                    <h1>
+                        <field name="reference_no"/>
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="partner_id" widget="res_partner_many2one"
+                                   context="{'res_partner_search_mode': 'customer', 'show_address': 1}"
+                                   options="{&quot;always_reload&quot;: True}"/>
+                            <field name="no_of_guests"/>
+                            <field name="check_in" readonly="true"/>
+                            <field name="check_out" states="check_out" readonly="true"/>
+                            <field name="purchase_order_id"/>
+                            <field name="purchase_state" />
+                        </group>
+                        <group>
+                            <field name="bed_type"/>
+
+                            <field name="facilities_ids" widget="many2many_tags"
+                                   options="{'color_field':'color','no_create': True, 'no_create_edit':True}"/>
+                            <field name="rooms_id" options="{'no_create': True, 'no_create_edit':True}"/>
+                            <field name="expected_days" states="draft,check_in"
+                                   attrs="{'readonly':[('state','=','check_in')]}"/>
+                            <field name="expected_date" states="draft,check_in"
+                                   decoration-warning="expected_date &lt;= current_date"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Guest Information">
+                            <field name="guest_details_ids">
+                                <tree editable="bottom">
+                                    <field name="partner_id"/>
+                                    <field name="gender"/>
+                                    <field name="age"/>
+                                </tree>
+                            </field>
+                            <h3>
+                                <group class="oe_subtotal_footer oe_right" colspan="2" name="total_rent">
+
+                                    <field name="total_rent" widget="monetary" readonly="True"/>
+                                    <field name="currency_id" invisible="1"/>
+                                </group>
+                            </h3>
+                        </page>
+
+                        <page string="Payment">
+                            <field name="payment_guest_ids"/>
+                            <h3>
+                                <group class="oe_subtotal_footer oe_right" colspan="2" name="total">
+
+                                    <field name="price_total" widget="monetary"/>
+                                    <field name="currency_id" invisible="1"/>
+                                </group>
+                            </h3>
+                            <group>
+                            <field name="account_id" readonly="True"/>
+                            <field name="payment_state" invisible="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="hotel_guest_view_tree" model="ir.ui.view">
+        <field name="name">hotel.quest.tree</field>
+        <field name="model">accommodation.guest</field>
+        <field name="arch" type="xml">
+            <tree default_order='check_in desc' decoration-warning="expected_date == current_date"
+                  decoration-danger="state != 'check_out'">
+                <field name="reference_no"/>
+                <field name="partner_id"/>
+                <field name="rooms_id"/>
+                <field name="state" widget="badge" decoration-success="state == 'draft' or state == 'check_out'"
+                       decoration-info="state == 'check_in'"/>
+                <field name="bed_type" optional="hide"/>
+                <field name="check_in" optional="hide"/>
+                <field name="expected_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="accommodation_view_search" model="ir.ui.view">
+        <field name="name">accommodation.search</field>
+        <field name="model">accommodation.guest</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="rooms_id"/>
+                <field name="partner_id"/>
+                <field name="reference_no"/>
+
+                <filter string="Today's expected check-outs" name="today_expected_checkout"
+                        domain="[('expected_date','=',datetime.datetime.now()),('state','!=','cancel')]"/>
+                <filter string="Check-in" name="check_in_list"
+                        domain="[('state','=','check_in')]"/>
+                <filter string="Today Check-out" name="today_check_out"
+                        domain="[('state','=','check_out'),('check_out','=',datetime.datetime.now())]"/>
+                <filter string="Tomorrow Check-out" name="tomorrow_check_out"
+                        domain="[('state','=','check_in'),('expected_date','=',datetime.datetime.now()+datetime.timedelta(1))]"/>
+                <filter string="Room" name="rooms_group" context="{'group_by': 'rooms_id'}"/>
+                <filter string="Type" name="type_group" context="{'group_by': 'bed_type'}"/>
+                <filter string="State" name="state_group" context="{'group_by': 'state'}"/>
+            </search>
+        </field>
+    </record>
+
+
+</odoo>

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="payment_guest_view_tree" model="ir.ui.view">
+        <field name="name">payment.guest.tree</field>
+        <field name="model">payment.guest</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="product_name"/>
+                <field name="product_description"/>
+                <field name="product_quantity"/>
+                <field name="product_uom"/>
+                <field name="product_unit_price"/>
+                <field name="product_sub_total_price"/>
+            </tree>
+        </field>
+    </record>
+</odoo>

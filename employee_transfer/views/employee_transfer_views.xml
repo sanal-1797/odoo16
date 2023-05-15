@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <!--    form view of employee transfer-->
+    <record id="employee_transfer_view_form" model="ir.ui.view">
+        <field name="name">employee.transfer.form</field>
+        <field name="model">employee.transfer</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_request" string="Request" class="btn-primary" type='object' states="draft"/>
+                    <button name="action_approve" string="Approve" class="btn-primary" type='object' states="request"
+                            groups="hr.group_hr_manager"/>
+                    <button name="action_cancel" string="Cancel" type='object' states="request"
+                            groups="hr.group_hr_manager"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <h1>
+                        Employee Transfer
+                    </h1>
+                    <notebook>
+                        <page string="Employee Transfer">
+                            <group>
+                                <group>
+                                    <field name="employee_id" required="True"/>
+                                    <field name="current_company_id"/>
+                                    <field name="new_company_id"
+                                           domain="[('id','!=',current_company_id)]"
+                                           options="{'no_create': True}"
+                                           attrs="{'invisible':[('state','=','approved')]}"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!--    action of employee transfer-->
+    <record id="employee_transfer_action" model="ir.actions.act_window">
+        <field name="name">Employee Transfer</field>
+        <field name="res_model">employee.transfer</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

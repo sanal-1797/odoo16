@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="online_hotel_room_booking_form" name="Hotel Room Booking Form">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <div class="container hotel_form">
+                    <form action="/submit">
+                        <div class="form-group">
+                            <h1>
+                                <center>HOTEL ROOM BOOKING</center>
+                            </h1>
+                            <hr/>
+                            <label for="name">Name:</label>
+                            <select id="partner" required="True" class="form-control"
+                                    style="width: 432px; height: 35px;">
+                                <t t-foreach="partners" t-as="partner">
+                                    <option t-att-value="partner.id" t-esc="partner.name"/>
+                                </t>
+                            </select>
+
+                            <label for="guest_count">No.of Guest:</label>
+                            <br/>
+                            <input type="number" id="no_of_guests" name="no_of_guests" min="1"
+                                   style="width: 432px; height: 35px;"/>
+                            <br/>
+
+                            <label for="check_in_date">Check in Date:</label>
+                            <input id="check_in" type="date" class="form-control s_website_form_input"
+                                   name="check_in_date" required="1" style="width: 432px; height: 35px;"/>
+
+                            <label for="bed">Bed:</label>
+                            <select class="form-control" name="bed_type"
+                                    style="width: 432px; height: 35px;">
+                                <option t-attf-value="'single'">Single</option>
+                                <option t-attf-value="'double'">Double</option>
+                                <option t-attf-value="'dormitory'">Dormitory</option>
+                            </select>
+                            <label for="facilities">Facilities :</label><br/>
+                            <select id="facilities_select" name="facilities" class="form-control" multiple="multiple"
+                                    style="width: 432px; height: 35px;">
+                                <t t-foreach="facilities" t-as="facility">
+                                    <option t-att-value="facility.id" t-esc="facility.facility_name"/>
+                                </t>
+                            </select>
+                            <label for="bed">Facilities :</label><br/>
+
+                        </div>
+                        <button type="submit" class="btn btn-primary">Create</button>
+                    </form>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

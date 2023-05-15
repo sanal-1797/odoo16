@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<odoo>
+    <!--    form view of Material request-->
+    <record id="material_request_view_form" model="ir.ui.view">
+        <field name="name">material.request.form</field>
+        <field name="model">material.request</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_request" string="Request" class="btn-primary" type='object' states="draft"/>
+                    <button name="action_manger_approve" string="Approve" class="btn-primary" type='object'
+                            states="request" groups="material_request.group_manager"/>
+                    <button name="action_head_approve" string="Approve" class="btn-primary" type='object'
+                            states="manager_approved" groups="material_request.group_head"/>
+                    <button name="action_reject" string="Reject" type='object' states="manager_approved"
+                            groups="material_request.group_head"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_purchase_orders_list" type="object" class="oe_stat_button"
+                                icon="fa-pencil-square-o" string="Purchase"
+                                attrs="{'invisible' : [('purchase_count','=',0)]}">
+                            <field  name="purchase_count" widget="statinfo"/>
+                        </button>
+                        <button name="action_view_internal_transfers_list" type="object" class="oe_stat_button"
+                                icon="fa-pencil-square-o" string="Internal Transfer"
+                                attrs="{'invisible' : [('internal_transfer_count','=',0)]}">
+                            <field  name="internal_transfer_count" widget="statinfo"/>
+                        </button>
+                    </div>
+
+                    <h1>
+                        <field name="request_no"/>
+                    </h1>
+                    <hr/>
+                    <group>
+                        <group>
+                            <field name="user_id"
+                                   readonly="True"/>
+
+                            <field name="purchase_count" invisible="1"/>
+                            <field name="internal_transfer_count" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="date_field"
+                                   readonly="True"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Product lines">
+                            <field name="product_line_ids"/>
+                        </page>
+                    </notebook>
+                </sheet>
+
+                <!--  chatter-->
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!--    Tree view of Material Request-->
+    <record id="material_request_view_tree" model="ir.ui.view">
+        <field name="name">material.request.tree</field>
+        <field name="model">material.request</field>
+        <field name="arch" type="xml">
+            <tree default_order='date_field desc'>
+                <field name="request_no"/>
+                <field name="user_id"/>
+                <field name="date_field"/>
+                <field name="state" widget="badge"
+                       decoration-primary="state == 'draft'"
+                       decoration-info="state == 'request'"
+                       decoration-success="state == 'manager_approved' or 'manager_approved'"/>
+            </tree>
+        </field>
+    </record>
+
+    <!--    action of Material request-->
+    <record id="material_request_action" model="ir.actions.act_window">
+        <field name="name">Material Request</field>
+        <field name="res_model">material.request</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <menuitem
+            name="Approval Block"
+            id="approval_block_menu"
+              action="approval_block_action"
+              parent="purchase.menu_purchase_root"/>
+
+</odoo>

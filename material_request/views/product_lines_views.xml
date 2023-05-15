@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="product_lines_view_tree" model="ir.ui.view">
+        <field name="name">product.lines.tree</field>
+        <field name="model">product.lines</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="product_id" required="True"/>
+                <field name="operations"/>
+                <field name="pro_qty"/>
+                <field name="source_location"
+                       attrs="{'readonly':[('operations','=','rfq')],'required':[('operations','=','internal_transfer')]}"/>
+                <field name="destination_location"
+                       attrs="{'readonly':[('operations','=','rfq')],'required':[('operations','=','internal_transfer')]}"/>
+            </tree>
+        </field>
+    </record>
+</odoo>

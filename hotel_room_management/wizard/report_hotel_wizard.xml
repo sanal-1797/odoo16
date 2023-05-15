@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--    wizard view form for Report hotel-->
+
+    <record id="report_hotel_wizard_view_form" model="ir.ui.view">
+        <field name="name">report.hotel.wizard.form</field>
+        <field name="model">report.hotel.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group class="oe_title">
+                        <field name="partner_id"  options="{'no_create': True}" />
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                    </group>
+                </sheet>
+                <footer>
+<!--                                  button to print pdf report-->
+                    <button name="action_print_report" string="PDF Report" type="object" class="btn-primary"/>
+
+<!--                                  button to print Xlsx report-->
+                    <button name="action_print_xlsx" string="Xlsx report" type="object" class="btn-primary"/>
+
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!--    action for wizard view form-->
+
+    <record id="report_hotel_wizard_action" model="ir.actions.act_window">
+        <field name="name">Hotel Management Report</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">report.hotel.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="report_hotel_wizard_view_form"/>
+        <field name="target">new</field>
+    </record>
+</odoo>

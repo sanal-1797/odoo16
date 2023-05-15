@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<odoo>
+    <!--    form view for Approval Block-->
+
+    <record id="approval_block_view_form" model="ir.ui.view">
+        <field name="name">approval.block.form</field>
+        <field name="model">approval.block</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <h2>
+                        <group>
+                            <field name="name" readonly="1"/>
+                        </group>
+                    </h2>
+                    <group>
+                        <field name="currency_id" invisible="1"/>
+                        <field name="limit" widget="monetary" readonly="1"/>
+                    </group>
+                </sheet>
+
+                <!--                            chatter-->
+
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!--    Tree view for the Approval Block-->
+
+    <record id="approval_block_view_tree" model="ir.ui.view">
+        <field name="name">approval.block.tree</field>
+        <field name="model">approval.block</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="name" required="1"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="limit" widget="monetary" required="1"/>
+
+            </tree>
+        </field>
+    </record>
+
+    <!--    action for to view the Approval block-->
+
+    <record id="approval_block_action" model="ir.actions.act_window">
+        <field name="name">Approval Block</field>
+        <field name="res_model">approval.block</field>
+        <field name="view_mode">tree</field>
+    </record>
+</odoo>
